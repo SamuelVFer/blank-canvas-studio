@@ -77,16 +77,45 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "TikTok Growth — Mentorias Amplify" },
+      {
+        name: "description",
+        content:
+          "Plataforma de mentorias TikTok Growth da Amplify. Acompanhe seu progresso, tire dúvidas com o mentor e acesse conteúdos exclusivos.",
+      },
+      { name: "author", content: "Amplify" },
+      { name: "theme-color", content: "#1E4DD1" },
+      { property: "og:title", content: "TikTok Growth — Mentorias Amplify" },
+      {
+        property: "og:description",
+        content:
+          "Plataforma de mentorias TikTok Growth da Amplify. Acompanhe seu progresso, tire dúvidas com o mentor e acesse conteúdos exclusivos.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Amplify" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "TikTok Growth — Mentorias Amplify" },
+      {
+        name: "twitter:description",
+        content:
+          "Plataforma de mentorias TikTok Growth da Amplify. Acompanhe seu progresso, tire dúvidas com o mentor e acesse conteúdos exclusivos.",
+      },
     ],
     links: [
+      // Work Sans (regular 400, medium 500, semibold 600, bold 700; italic 400-700).
+      {
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
