@@ -78,29 +78,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TikTok Growth — Mentorias Amplify" },
+      { title: "Amplify TikTok Growth" },
       {
         name: "description",
         content:
-          "Plataforma de mentorias TikTok Growth da Amplify. Acompanhe seu progresso, tire dúvidas com o mentor e acesse conteúdos exclusivos.",
+          "Plataforma de mentorias TikTok Growth da Amplify",
       },
       { name: "author", content: "Amplify" },
       { name: "theme-color", content: "#1E4DD1" },
-      { property: "og:title", content: "TikTok Growth — Mentorias Amplify" },
+      { property: "og:title", content: "Amplify TikTok Growth" },
       {
         property: "og:description",
         content:
-          "Plataforma de mentorias TikTok Growth da Amplify. Acompanhe seu progresso, tire dúvidas com o mentor e acesse conteúdos exclusivos.",
+          "Plataforma de mentorias TikTok Growth da Amplify",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Amplify" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "TikTok Growth — Mentorias Amplify" },
+      { name: "twitter:title", content: "Amplify TikTok Growth" },
       {
         name: "twitter:description",
         content:
-          "Plataforma de mentorias TikTok Growth da Amplify. Acompanhe seu progresso, tire dúvidas com o mentor e acesse conteúdos exclusivos.",
+          "Plataforma de mentorias TikTok Growth da Amplify",
       },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bab89c84-7e58-48a9-85c7-2f3fde512514/id-preview-76a2c436--4cfbd5b1-f870-4f2c-a7ea-5864418bdc9c.lovable.app-1783634025759.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bab89c84-7e58-48a9-85c7-2f3fde512514/id-preview-76a2c436--4cfbd5b1-f870-4f2c-a7ea-5864418bdc9c.lovable.app-1783634025759.png" },
     ],
     links: [
       // Work Sans (regular 400, medium 500, semibold 600, bold 700; italic 400-700).
@@ -121,7 +123,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
   shellComponent: RootShell,
