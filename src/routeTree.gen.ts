@@ -9,38 +9,141 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MeuDashRouteImport } from './routes/meu-dash'
+import { Route as DuvidasRespostasRouteImport } from './routes/duvidas-respostas'
+import { Route as AreaMentoradosRouteImport } from './routes/area-mentorados'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminTurmasRouteImport } from './routes/admin/turmas'
+import { Route as AdminAgendaRouteImport } from './routes/admin/agenda'
 
+const MeuDashRoute = MeuDashRouteImport.update({
+  id: '/meu-dash',
+  path: '/meu-dash',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DuvidasRespostasRoute = DuvidasRespostasRouteImport.update({
+  id: '/duvidas-respostas',
+  path: '/duvidas-respostas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AreaMentoradosRoute = AreaMentoradosRouteImport.update({
+  id: '/area-mentorados',
+  path: '/area-mentorados',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTurmasRoute = AdminTurmasRouteImport.update({
+  id: '/admin/turmas',
+  path: '/admin/turmas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAgendaRoute = AdminAgendaRouteImport.update({
+  id: '/admin/agenda',
+  path: '/admin/agenda',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/area-mentorados': typeof AreaMentoradosRoute
+  '/duvidas-respostas': typeof DuvidasRespostasRoute
+  '/meu-dash': typeof MeuDashRoute
+  '/admin/agenda': typeof AdminAgendaRoute
+  '/admin/turmas': typeof AdminTurmasRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/area-mentorados': typeof AreaMentoradosRoute
+  '/duvidas-respostas': typeof DuvidasRespostasRoute
+  '/meu-dash': typeof MeuDashRoute
+  '/admin/agenda': typeof AdminAgendaRoute
+  '/admin/turmas': typeof AdminTurmasRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/area-mentorados': typeof AreaMentoradosRoute
+  '/duvidas-respostas': typeof DuvidasRespostasRoute
+  '/meu-dash': typeof MeuDashRoute
+  '/admin/agenda': typeof AdminAgendaRoute
+  '/admin/turmas': typeof AdminTurmasRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/area-mentorados'
+    | '/duvidas-respostas'
+    | '/meu-dash'
+    | '/admin/agenda'
+    | '/admin/turmas'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/area-mentorados'
+    | '/duvidas-respostas'
+    | '/meu-dash'
+    | '/admin/agenda'
+    | '/admin/turmas'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/area-mentorados'
+    | '/duvidas-respostas'
+    | '/meu-dash'
+    | '/admin/agenda'
+    | '/admin/turmas'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AreaMentoradosRoute: typeof AreaMentoradosRoute
+  DuvidasRespostasRoute: typeof DuvidasRespostasRoute
+  MeuDashRoute: typeof MeuDashRoute
+  AdminAgendaRoute: typeof AdminAgendaRoute
+  AdminTurmasRoute: typeof AdminTurmasRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/meu-dash': {
+      id: '/meu-dash'
+      path: '/meu-dash'
+      fullPath: '/meu-dash'
+      preLoaderRoute: typeof MeuDashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/duvidas-respostas': {
+      id: '/duvidas-respostas'
+      path: '/duvidas-respostas'
+      fullPath: '/duvidas-respostas'
+      preLoaderRoute: typeof DuvidasRespostasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/area-mentorados': {
+      id: '/area-mentorados'
+      path: '/area-mentorados'
+      fullPath: '/area-mentorados'
+      preLoaderRoute: typeof AreaMentoradosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +151,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/turmas': {
+      id: '/admin/turmas'
+      path: '/admin/turmas'
+      fullPath: '/admin/turmas'
+      preLoaderRoute: typeof AdminTurmasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/agenda': {
+      id: '/admin/agenda'
+      path: '/admin/agenda'
+      fullPath: '/admin/agenda'
+      preLoaderRoute: typeof AdminAgendaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AreaMentoradosRoute: AreaMentoradosRoute,
+  DuvidasRespostasRoute: DuvidasRespostasRoute,
+  MeuDashRoute: MeuDashRoute,
+  AdminAgendaRoute: AdminAgendaRoute,
+  AdminTurmasRoute: AdminTurmasRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
