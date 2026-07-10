@@ -3,19 +3,8 @@ import { motion } from "framer-motion";
 import { CalendarClock, ExternalLink, Info } from "lucide-react";
 
 import { PageShell } from "@/components/layout/page-shell";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/admin/agenda")({
   component: AdminAgendaPage,
@@ -82,7 +71,8 @@ function AdminAgendaPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Em construção. A direção técnica de como o Lovable deve montar isso está na aba ao lado.
+                  Em construção. A direção técnica de como o Lovable deve montar isso está na aba ao
+                  lado.
                 </p>
               </CardContent>
             </Card>
@@ -134,21 +124,19 @@ table: invite_recipients (
                     <strong>Turma</strong>: select vindo de <code>turmas</code>.
                   </li>
                   <li>
-                    <strong>Data/hora</strong>: <code>react-day-picker</code> +
-                    input time.
+                    <strong>Data/hora</strong>: <code>react-day-picker</code> + input time.
                   </li>
                   <li>
                     <strong>Mensagem</strong>: textarea com template (variáveis{" "}
-                    <code>&#123;&#123;nome&#125;&#125;</code>, <code>&#123;&#123;turma&#125;&#125;</code>,
-                    link de agenda).
+                    <code>&#123;&#123;nome&#125;&#125;</code>,{" "}
+                    <code>&#123;&#123;turma&#125;&#125;</code>, link de agenda).
                   </li>
                   <li>
-                    <strong>Preview</strong>: card ao lado mostrando como vai chegar
-                    no WhatsApp.
+                    <strong>Preview</strong>: card ao lado mostrando como vai chegar no WhatsApp.
                   </li>
                   <li>
-                    <strong>Submit</strong>: cria linha em <code>invite_batches</code> com
-                    status <code>pending</code>; UI mostra toast e a row na tabela.
+                    <strong>Submit</strong>: cria linha em <code>invite_batches</code> com status{" "}
+                    <code>pending</code>; UI mostra toast e a row na tabela.
                   </li>
                 </ul>
               </section>
@@ -158,12 +146,12 @@ table: invite_recipients (
                   3. Disparo — webhook para n8n
                 </h3>
                 <p className="text-muted-foreground">
-                  Em vez de chamar a API do WhatsApp direto do front (vaza token,
-                  bloqueia CORS), cria um <strong>Edge Function</strong> no Lovable
-                  Cloud que recebe o <code>batch_id</code>, monta a lista de
-                  recipients e faz <code>POST</code> para o webhook do workflow
-                  <code> tiktokPartnerInvite1</code> (já configurado) ou um workflow
-                  novo dedicado a <em>convites de agenda</em>.
+                  Em vez de chamar a API do WhatsApp direto do front (vaza token, bloqueia CORS),
+                  cria um <strong>Edge Function</strong> no Lovable Cloud que recebe o{" "}
+                  <code>batch_id</code>, monta a lista de recipients e faz <code>POST</code> para o
+                  webhook do workflow
+                  <code> tiktokPartnerInvite1</code> (já configurado) ou um workflow novo dedicado a{" "}
+                  <em>convites de agenda</em>.
                 </p>
                 <pre className="overflow-x-auto rounded-md bg-muted p-3 text-xs">{`// supabase/functions/dispatch-invite/index.ts
 serve(async (req) => {
@@ -180,13 +168,13 @@ serve(async (req) => {
                   4. O que NÃO precisa ser mudado
                 </h3>
                 <ul className="ml-4 list-disc space-y-1 text-muted-foreground">
-                  <li>O workflow <code>tiktokPartnerInvite1</code> já fala com a Huggy.</li>
                   <li>
-                    As credenciais do n8n (Huggy Disparo, Supabase) já estão lá.
+                    O workflow <code>tiktokPartnerInvite1</code> já fala com a Huggy.
                   </li>
+                  <li>As credenciais do n8n (Huggy Disparo, Supabase) já estão lá.</li>
                   <li>
-                    A tabela <code>chat_messages</code> registra tudo — você já tem
-                    a query pra auditar.
+                    A tabela <code>chat_messages</code> registra tudo — você já tem a query pra
+                    auditar.
                   </li>
                 </ul>
               </section>

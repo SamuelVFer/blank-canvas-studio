@@ -1,13 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { PageShell } from "@/components/layout/page-shell";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/admin/")({
@@ -40,10 +34,7 @@ function AdminLandingPage() {
             <CardDescription>Crie, edite e gerencie turmas de mentorados.</CardDescription>
           </CardHeader>
           <CardContent>
-            <a
-              href="/admin/turmas"
-              className="text-sm font-medium text-primary hover:underline"
-            >
+            <a href="/admin/turmas" className="text-sm font-medium text-primary hover:underline">
               Abrir gerenciamento →
             </a>
           </CardContent>
@@ -51,15 +42,10 @@ function AdminLandingPage() {
         <Card>
           <CardHeader>
             <CardTitle>Agenda de convites</CardTitle>
-            <CardDescription>
-              Dispare convites de agenda para as turmas.
-            </CardDescription>
+            <CardDescription>Dispare convites de agenda para as turmas.</CardDescription>
           </CardHeader>
           <CardContent>
-            <a
-              href="/admin/agenda"
-              className="text-sm font-medium text-primary hover:underline"
-            >
+            <a href="/admin/agenda" className="text-sm font-medium text-primary hover:underline">
               Configurar disparo →
             </a>
           </CardContent>

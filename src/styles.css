@@ -70,13 +70,13 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.04 268);
   /* Amplify primary: #1E4DD1 */
-  --primary: oklch(0.480 0.209 264.450);
+  --primary: oklch(0.48 0.209 264.45);
   --primary-foreground: oklch(0.985 0 0);
   /* Amplify secondary: subtle neutral surface, accent is the crimson */
   --secondary: oklch(0.96 0.01 264);
   --secondary-foreground: oklch(0.18 0.04 268);
   --muted: oklch(0.96 0.01 264);
-  --muted-foreground: oklch(0.50 0.04 264);
+  --muted-foreground: oklch(0.5 0.04 264);
   --accent: oklch(0.94 0.04 264);
   --accent-foreground: oklch(0.18 0.04 268);
   /* Amplify destructive/accent: #C90043 */
@@ -84,27 +84,27 @@
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.91 0.02 264);
   --input: oklch(0.91 0.02 264);
-  --ring: oklch(0.480 0.209 264.450);
+  --ring: oklch(0.48 0.209 264.45);
   /* Chart palette: brand-led (blue -> crimson gradient through neutrals) */
-  --chart-1: oklch(0.480 0.209 264.450);
+  --chart-1: oklch(0.48 0.209 264.45);
   --chart-2: oklch(0.531 0.212 14.799);
   --chart-3: oklch(0.62 0.14 264);
   --chart-4: oklch(0.72 0.12 14);
-  --chart-5: oklch(0.50 0.04 264);
+  --chart-5: oklch(0.5 0.04 264);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.18 0.04 268);
-  --sidebar-primary: oklch(0.480 0.209 264.450);
+  --sidebar-primary: oklch(0.48 0.209 264.45);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.94 0.04 264);
   --sidebar-accent-foreground: oklch(0.18 0.04 268);
   --sidebar-border: oklch(0.91 0.02 264);
-  --sidebar-ring: oklch(0.480 0.209 264.450);
+  --sidebar-ring: oklch(0.48 0.209 264.45);
 
   /* Amplify brand extras (consumable via Tailwind utilities below) */
-  --brand-primary: oklch(0.480 0.209 264.450);
+  --brand-primary: oklch(0.48 0.209 264.45);
   --brand-accent: oklch(0.531 0.212 14.799);
   --brand-on-primary: oklch(0.985 0 0);
-  --brand-glow: oklch(0.480 0.209 264.450 / 35%);
+  --brand-glow: oklch(0.48 0.209 264.45 / 35%);
   --brand-crimson-glow: oklch(0.531 0.212 14.799 / 25%);
 }
 
@@ -115,32 +115,32 @@
   --card-foreground: oklch(0.97 0.01 264);
   --popover: oklch(0.21 0.05 264);
   --popover-foreground: oklch(0.97 0.01 264);
-  --primary: oklch(0.65 0.18 264.450);
+  --primary: oklch(0.65 0.18 264.45);
   --primary-foreground: oklch(0.16 0.04 264);
   --secondary: oklch(0.27 0.04 264);
   --secondary-foreground: oklch(0.97 0.01 264);
   --muted: oklch(0.27 0.04 264);
-  --muted-foreground: oklch(0.70 0.03 264);
-  --accent: oklch(0.30 0.05 264);
+  --muted-foreground: oklch(0.7 0.03 264);
+  --accent: oklch(0.3 0.05 264);
   --accent-foreground: oklch(0.97 0.01 264);
-  --destructive: oklch(0.65 0.20 14.799);
+  --destructive: oklch(0.65 0.2 14.799);
   --destructive-foreground: oklch(0.97 0.01 264);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.65 0.18 264.450);
-  --chart-1: oklch(0.65 0.18 264.450);
-  --chart-2: oklch(0.65 0.20 14.799);
+  --ring: oklch(0.65 0.18 264.45);
+  --chart-1: oklch(0.65 0.18 264.45);
+  --chart-2: oklch(0.65 0.2 14.799);
   --chart-3: oklch(0.72 0.12 264);
   --chart-4: oklch(0.72 0.12 14);
-  --chart-5: oklch(0.50 0.04 264);
+  --chart-5: oklch(0.5 0.04 264);
   --sidebar: oklch(0.21 0.05 264);
   --sidebar-foreground: oklch(0.97 0.01 264);
-  --sidebar-primary: oklch(0.65 0.18 264.450);
+  --sidebar-primary: oklch(0.65 0.18 264.45);
   --sidebar-primary-foreground: oklch(0.16 0.04 264);
   --sidebar-accent: oklch(0.27 0.04 264);
   --sidebar-accent-foreground: oklch(0.97 0.01 264);
   --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.65 0.18 264.450);
+  --sidebar-ring: oklch(0.65 0.18 264.45);
 }
 
 @layer base {
@@ -150,8 +150,16 @@
 
   html,
   body {
-    font-family: "Work Sans", ui-sans-serif, system-ui, -apple-system,
-      "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family:
+      "Work Sans",
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Roboto,
+      "Helvetica Neue",
+      Arial,
+      sans-serif;
   }
 
   body {
@@ -175,8 +183,7 @@
   --color-brand-primary: var(--brand-primary);
   --color-brand-accent: var(--brand-accent);
   --color-brand-on-primary: var(--brand-on-primary);
-  --font-sans: "Work Sans", ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Work Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Brand gradient utilities (used by login + authed shell). */

@@ -7,14 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-
-/**
- * Auth mock — sem backend.
- *
- * Três perfis demo persistidos em localStorage. Quando o Samuel plugar
- * Supabase (Lovable Cloud), basta trocar este provider por um que
- * use a sessão real; o resto do app consome `useAuth()` e não muda.
- */
+import { supabase, hasSupabaseConfigured } from "./supabase";
 
 export type UserRole = "admin" | "marca" | "mentorado";
 
@@ -34,30 +27,37 @@ export interface User {
 export const DEMO_USERS: Record<UserRole, User> = {
   admin: {
     id: "demo-admin",
-    name: "Samuel V. Ferreira",
-    email: "samuel@amplify.com.br",
+    name: "Samuel V. Fernandes",
+    email: "samuel@amplifyugc.co",
     role: "admin",
   },
   marca: {
     id: "demo-marca",
-    name: "Camila Souza",
-    email: "camila@marca-x.com.br",
+    name: "Representante da Marca",
+    email: "marca@amplifyugc.co",
     role: "marca",
-    brandId: "marca-x",
-    brandName: "Marca X",
+    brandId: "marca-parceira",
+    brandName: "Marca Parceira",
   },
   mentorado: {
     id: "demo-mentorado",
-    name: "Lucas Pereira",
-    email: "lucas@gmail.com",
+    name: "Mentorado Tiktok",
+    email: "aluno@amplifyugc.co",
     role: "mentorado",
     turma: "Turma 2026.1",
   },
 };
 
-export const DEMO_ROLES: UserRole[] = ["admin", "marca", "mentorado"];
-
 const STORAGE_KEY = "tiktok-growth:auth:v1";
+
+function getHelperNameFromEmail(email: string): string {
+  const localPart = email.split("@")[0] || "Usuário";
+  // Subsititui pontos ou traços por espaços e capitaliza
+  return localPart
+    .split(/[._-]/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
 
 function readStoredUser(): User | null {
   if (typeof window === "undefined") return null;
@@ -78,7 +78,7 @@ function writeStoredUser(user: User | null): void {
     if (user) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
     else window.localStorage.removeItem(STORAGE_KEY);
   } catch {
-    // QuotaExceeded etc — silently ignore for now.
+    // Silently ignore storage quota errors
   }
 }
 
@@ -97,8 +97,9 @@ interface AuthContextValue {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
+  login: (email: string, password?: string) => Promise<{ success: boolean; error?: string }>;
   loginAs: (role: UserRole) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -107,21 +108,185 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Hydrate from localStorage on mount (client only).
+  // Monitora alterações de autenticação (Supabase ou LocalStorage)
   useEffect(() => {
-    setUser(readStoredUser());
-    setLoading(false);
+    if (hasSupabaseConfigured) {
+      // Carrega sessão atual do Supabase
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          const email = session.user.email || "";
+          let role: UserRole = "mentorado";
+
+          if (email === "samuel@amplifyugc.co") {
+            role = "admin";
+          } else if (session.user.user_metadata?.role) {
+            role = session.user.user_metadata.role;
+          }
+
+          setUser({
+            id: session.user.id,
+            name: session.user.user_metadata?.name || getHelperNameFromEmail(email),
+            email: email,
+            role: role,
+            brandId: session.user.user_metadata?.brandId,
+            brandName: session.user.user_metadata?.brandName,
+            turma: session.user.user_metadata?.turma || "Turma Geral",
+          });
+        } else {
+          setUser(null);
+        }
+        setLoading(false);
+      });
+
+      // Escuta mudanças de auth
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (session?.user) {
+          const email = session.user.email || "";
+          let role: UserRole = "mentorado";
+
+          if (email === "samuel@amplifyugc.co") {
+            role = "admin";
+          } else if (session.user.user_metadata?.role) {
+            role = session.user.user_metadata.role;
+          }
+
+          setUser({
+            id: session.user.id,
+            name: session.user.user_metadata?.name || getHelperNameFromEmail(email),
+            email: email,
+            role: role,
+            brandId: session.user.user_metadata?.brandId,
+            brandName: session.user.user_metadata?.brandName,
+            turma: session.user.user_metadata?.turma || "Turma Geral",
+          });
+        } else {
+          setUser(null);
+        }
+      });
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    } else {
+      // Fallback: LocalStorage
+      setUser(readStoredUser());
+      setLoading(false);
+    }
   }, []);
 
+  // Login genérico (suporta real & mock)
+  const login = useCallback(
+    async (email: string, password?: string): Promise<{ success: boolean; error?: string }> => {
+      setLoading(true);
+      const emailLower = email.toLowerCase().trim();
+
+      if (hasSupabaseConfigured) {
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: emailLower,
+            password: password || "",
+          });
+
+          if (error) {
+            setLoading(false);
+            return { success: false, error: error.message };
+          }
+
+          if (data.user) {
+            const userEmail = data.user.email || "";
+            let role: UserRole = "mentorado";
+
+            if (userEmail === "samuel@amplifyugc.co") {
+              role = "admin";
+            } else if (data.user.user_metadata?.role) {
+              role = data.user.user_metadata.role;
+            }
+
+            const activeUser: User = {
+              id: data.user.id,
+              name: data.user.user_metadata?.name || getHelperNameFromEmail(userEmail),
+              email: userEmail,
+              role: role,
+              brandId: data.user.user_metadata?.brandId,
+              brandName: data.user.user_metadata?.brandName,
+              turma: data.user.user_metadata?.turma || "Turma Geral",
+            };
+            setUser(activeUser);
+            setLoading(false);
+            return { success: true };
+          }
+        } catch (e) {
+          setLoading(false);
+          const message = e instanceof Error ? e.message : "Erro de conexão";
+          return { success: false, error: message };
+        }
+      }
+
+      // MODO FALLBACK (Sem Supabase chaves ativas)
+      // Validação das credenciais ADM
+      if (emailLower === "samuel@amplifyugc.co") {
+        if (password === "Amplify@1980") {
+          const adminUser: User = {
+            id: "demo-admin",
+            name: "Matheus Figueiredo",
+            email: "samuel@amplifyugc.co",
+            role: "admin",
+          };
+          writeStoredUser(adminUser);
+          setUser(adminUser);
+          setLoading(false);
+          return { success: true };
+        } else {
+          setLoading(false);
+          return { success: false, error: "Senha de administrador incorreta" };
+        }
+      }
+
+      // Para mentorados e outras marcas de testes na simulação:
+      let role: UserRole = "mentorado";
+      if (emailLower.includes("marca")) {
+        role = "marca";
+      }
+
+      const mockUser: User = {
+        id: `mock-${role}-${Date.now()}`,
+        name: getHelperNameFromEmail(emailLower),
+        email: emailLower,
+        role: role,
+        brandId: role === "marca" ? "marca-custom" : undefined,
+        brandName: role === "marca" ? "Marca Simulação" : undefined,
+        turma: role === "mentorado" ? "Turma Geral" : undefined,
+      };
+
+      writeStoredUser(mockUser);
+      setUser(mockUser);
+      setLoading(false);
+      return { success: true };
+    },
+    [],
+  );
+
+  // Facilidade para login rápido por botão demonstrativo
   const loginAs = useCallback((role: UserRole) => {
+    if (hasSupabaseConfigured) {
+      console.warn("loginAs ignorado pois o Supabase está ativado no .env");
+      return;
+    }
     const next = DEMO_USERS[role];
     writeStoredUser(next);
     setUser(next);
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    setLoading(true);
+    if (hasSupabaseConfigured) {
+      await supabase.auth.signOut();
+    }
     writeStoredUser(null);
     setUser(null);
+    setLoading(false);
   }, []);
 
   const value = useMemo<AuthContextValue>(
@@ -129,10 +294,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       loading,
       isAuthenticated: user !== null,
+      login,
       loginAs,
       logout,
     }),
-    [user, loading, loginAs, logout],
+    [user, loading, login, loginAs, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

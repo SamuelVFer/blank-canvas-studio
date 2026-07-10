@@ -155,9 +155,7 @@ export function PageShell({ children, title, subtitle }: PageShellProps) {
             <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               {title}
             </h1>
-            {subtitle && (
-              <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
-            )}
+            {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
           </header>
           {children}
         </motion.div>
@@ -202,9 +200,7 @@ export function ComingSoon({
         <Sparkles className="h-5 w-5" />
       </div>
       <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-      <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
-        {description}
-      </p>
+      <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">{description}</p>
       {bullets && bullets.length > 0 && (
         <ul className="mx-auto mt-4 max-w-md space-y-1 text-left text-sm text-muted-foreground">
           {bullets.map((b) => (

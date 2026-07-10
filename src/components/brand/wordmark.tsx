@@ -33,12 +33,7 @@ export interface WordmarkProps {
   as?: "span" | "div" | "h1" | "h2" | "h3";
 }
 
-export function Wordmark({
-  size = "md",
-  className,
-  withBadge,
-  as: Tag = "span",
-}: WordmarkProps) {
+export function Wordmark({ size = "md", className, withBadge, as: Tag = "span" }: WordmarkProps) {
   const showBadge = withBadge ?? (size === "lg" || size === "xl");
 
   return (
@@ -49,15 +44,8 @@ export function Wordmark({
         className,
       )}
     >
-      <span className={cn("tracking-tight text-foreground", weightClassMap[size])}>
-        TikTok
-      </span>
-      <span
-        className={cn(
-          "tracking-tight text-brand-gradient italic",
-          weightClassMap[size],
-        )}
-      >
+      <span className={cn("tracking-tight text-foreground", weightClassMap[size])}>TikTok</span>
+      <span className={cn("tracking-tight text-brand-gradient italic", weightClassMap[size])}>
         Growth
       </span>
       {showBadge && (

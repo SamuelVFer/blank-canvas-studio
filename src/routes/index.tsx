@@ -1,13 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
-import {
-  ArrowRight,
-  BarChart3,
-  Lock,
-  Mail,
-  MessageCircle,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, BarChart3, Lock, Mail, MessageCircle, Sparkles } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -16,12 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Wordmark } from "@/components/brand/wordmark";
 import { cn } from "@/lib/utils";
-import {
-  DEMO_USERS,
-  homeRouteFor,
-  useAuth,
-  type UserRole,
-} from "@/lib/auth";
+import { DEMO_USERS, homeRouteFor, useAuth, type UserRole } from "@/lib/auth";
+import { hasSupabaseConfigured } from "@/lib/supabase";
 
 // No head() here: home inherits meta from __root.tsx.
 
@@ -79,7 +68,7 @@ const DEMO_PROFILES: DemoProfile[] = [
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { user, loading, loginAs, logout } = useAuth();
+  const { user, loading, login, loginAs, logout } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -103,16 +92,18 @@ function LoginPage() {
     }, 180);
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
     setError(null);
-    // Mock auth: infer role from email so any input works for now.
-    // When Supabase is wired, this is replaced by real auth.
-    const lowered = email.toLowerCase();
-    let role: UserRole = "mentorado";
-    if (lowered.includes("admin")) role = "admin";
-    else if (lowered.includes("marca")) role = "marca";
-    handleDemoLogin(role);
+
+    const res = await login(email, password);
+    if (res.success) {
+      // O useEffect redirecionará automaticamente
+    } else {
+      setError(res.error || "Credenciais inválidas");
+      setSubmitting(false);
+    }
   };
 
   const handleSignOut = () => {
@@ -154,8 +145,8 @@ function LoginPage() {
         <motion.div variants={itemVariants} className="mb-6 flex flex-col items-center">
           <Wordmark size="xl" withBadge />
           <p className="mt-4 max-w-xl text-center text-base text-muted-foreground sm:text-lg">
-            Sua plataforma de mentorias TikTok Growth. Acompanhe seu progresso,
-            tire dúvidas com o mentor e acesse conteúdos exclusivos.
+            Sua plataforma de mentorias TikTok Growth. Acompanhe seu progresso, tire dúvidas com o
+            mentor e acesse conteúdos exclusivos.
           </p>
         </motion.div>
 
@@ -185,9 +176,7 @@ function LoginPage() {
                     <Label htmlFor="password">Senha</Label>
                     <button
                       type="button"
-                      onClick={() =>
-                        setError("Recuperação de senha virá com o Supabase.")
-                      }
+                      onClick={() => setError("Recuperação de senha virá com o Supabase.")}
                       className="text-xs font-medium text-primary hover:underline"
                     >
                       Esqueci a senha
@@ -217,38 +206,37 @@ function LoginPage() {
                   </p>
                 )}
 
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full"
-                  disabled={submitting}
-                >
+                <Button type="submit" size="lg" className="w-full" disabled={submitting}>
                   {submitting ? "Entrando..." : "Entrar"}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </form>
 
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase tracking-wider">
-                  <span className="bg-card px-2 text-muted-foreground">
-                    ou entre rápido como
-                  </span>
-                </div>
-              </div>
+              {!hasSupabaseConfigured && (
+                <>
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase tracking-wider">
+                      <span className="bg-card px-2 text-muted-foreground">
+                        ou entre rápido como
+                      </span>
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-1 gap-2">
-                {DEMO_PROFILES.map((profile) => (
-                  <DemoLoginButton
-                    key={profile.role}
-                    profile={profile}
-                    onClick={() => handleDemoLogin(profile.role)}
-                    disabled={submitting}
-                  />
-                ))}
-              </div>
+                  <div className="grid grid-cols-1 gap-2">
+                    {DEMO_PROFILES.map((profile) => (
+                      <DemoLoginButton
+                        key={profile.role}
+                        profile={profile}
+                        onClick={() => handleDemoLogin(profile.role)}
+                        disabled={submitting}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         </motion.div>
