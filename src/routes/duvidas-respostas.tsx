@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/auth";
 import { supabase, hasSupabaseConfigured } from "@/lib/supabase";
+import { requireAuth } from "@/lib/route-guards";
 
 export const Route = createFileRoute("/duvidas-respostas")({
   component: DuvidasPage,
