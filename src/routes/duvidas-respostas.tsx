@@ -132,7 +132,7 @@ function DuvidasPage() {
           .order("created_at", { ascending: false });
 
         if (err) throw err;
-        setDuvidas(data || []);
+        setDuvidas((data || []) as Duvida[]);
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Erro ao carregar dúvidas do Supabase.";
