@@ -26,22 +26,9 @@ import { supabase, hasSupabaseConfigured } from "@/lib/supabase";
 
 export const Route = createFileRoute("/duvidas-respostas")({
   component: DuvidasPage,
-  beforeLoad: async () => {
-    if (typeof window === "undefined") return;
-
-    // Check local fallback session
-    const localSession = window.localStorage.getItem("tiktok-growth:auth:v1");
-    if (localSession) return;
-
-    // Check Supabase session if configured
-    if (hasSupabaseConfigured) {
-      const { data } = await supabase.auth.getSession();
-      if (data.session?.user) return;
-    }
-
-    throw redirect({ to: "/" });
-  },
+  beforeLoad: () => requireAuth(),
 });
+
 
 interface Duvida {
   id: string;

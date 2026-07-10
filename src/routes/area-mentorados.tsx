@@ -1,15 +1,13 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { ComingSoon, PageShell } from "@/components/layout/page-shell";
+import { requireAuth } from "@/lib/route-guards";
 
 export const Route = createFileRoute("/area-mentorados")({
   component: AreaMentoradosPage,
-  beforeLoad: () => {
-    if (typeof window === "undefined") return;
-    const raw = window.localStorage.getItem("tiktok-growth:auth:v1");
-    if (!raw) throw redirect({ to: "/" });
-  },
+  beforeLoad: () => requireAuth(),
 });
+
 
 function AreaMentoradosPage() {
   return (
