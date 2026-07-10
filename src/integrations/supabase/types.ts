@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      duvidas: {
+        Row: {
+          answer_text: string | null
+          answered_at: string | null
+          answered_by: string | null
+          category: string
+          created_at: string
+          description: string
+          id: string
+          is_public: boolean
+          status: string
+          title: string
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          answer_text?: string | null
+          answered_at?: string | null
+          answered_by?: string | null
+          category: string
+          created_at?: string
+          description: string
+          id?: string
+          is_public?: boolean
+          status?: string
+          title: string
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          answer_text?: string | null
+          answered_at?: string | null
+          answered_by?: string | null
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_public?: boolean
+          status?: string
+          title?: string
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
