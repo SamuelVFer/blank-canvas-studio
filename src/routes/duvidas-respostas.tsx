@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MessageSquare,
@@ -23,25 +23,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/auth";
 import { supabase, hasSupabaseConfigured } from "@/lib/supabase";
+import { requireAuth } from "@/lib/route-guards";
 
 export const Route = createFileRoute("/duvidas-respostas")({
   component: DuvidasPage,
-  beforeLoad: async () => {
-    if (typeof window === "undefined") return;
-
-    // Check local fallback session
-    const localSession = window.localStorage.getItem("tiktok-growth:auth:v1");
-    if (localSession) return;
-
-    // Check Supabase session if configured
-    if (hasSupabaseConfigured) {
-      const { data } = await supabase.auth.getSession();
-      if (data.session?.user) return;
-    }
-
-    throw redirect({ to: "/" });
-  },
+  beforeLoad: () => requireAuth(),
 });
+
 
 interface Duvida {
   id: string;

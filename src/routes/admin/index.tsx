@@ -1,23 +1,15 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { PageShell } from "@/components/layout/page-shell";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/lib/auth";
+import { requireAuth } from "@/lib/route-guards";
 
 export const Route = createFileRoute("/admin/")({
   component: AdminLandingPage,
-  beforeLoad: () => {
-    if (typeof window === "undefined") return;
-    const raw = window.localStorage.getItem("tiktok-growth:auth:v1");
-    if (!raw) throw redirect({ to: "/" });
-    try {
-      const u = JSON.parse(raw) as { role?: string };
-      if (u.role !== "admin") throw redirect({ to: "/" });
-    } catch {
-      throw redirect({ to: "/" });
-    }
-  },
+  beforeLoad: () => requireAuth(["admin"]),
 });
+
 
 function AdminLandingPage() {
   const { user } = useAuth();
